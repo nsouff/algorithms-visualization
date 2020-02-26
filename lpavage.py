@@ -65,7 +65,7 @@ def poseTuile(i, j, dir):
         tab[2] = [i-1, j]
 
     global count
-    root.after(1*count, lambda: poseTuileAux(tab, color))
+    root.after(speed*count, lambda: poseTuileAux(tab, color))
     count+=1
 
 def poseTuileAux(tab, color):
@@ -102,10 +102,15 @@ def pavage(p, q, l, i, j):
             pavage(p+m, q, l-1, i, j)       # SO
             pavage(p+m, q+m, l-1, p+m, q+m) # SE
             poseTuile(p+m, q+m-1, dir)
-l = int(input("Enter the size of the 2D Array as 2^(your number)"))
-# l = int(sys.argv[1])
+if len(sys.argv) > 1:
+    l = int(sys.argv[1])
+else :
+    l = int(input("Enter the size of the 2D Array as 2^(your number)"))
+if len(sys.argv) > 2:
+    speed = int(sys.argv[2])
+else :
+    speed = int(input("Enter the speed of each step (in ms)"))
 size = 2**l
-
 grid = [[0 for _ in range(size)] for _ in range(size)]
 
 root = Tk()
