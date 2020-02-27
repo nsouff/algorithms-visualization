@@ -21,12 +21,12 @@ def randomColor():
 
 def launch(event):
     widget = event.widget
-    row = event.x // (512//size)
-    x0  = row * (512//size)
-    col = event.y // (512//size)
-    y0 = col * (512//size)
-    x1 = x0 + 512//size
-    y1 = y0 + 512//size
+    row = event.x // (length)
+    x0  = row * (length)
+    col = event.y // (length)
+    y0 = col * (length)
+    x1 = x0 + length
+    y1 = y0 + length
     widget.create_rectangle(x0, y0, x1, y1, fill='black')
     widget.unbind("<Button-1>")
     pavage(0, 0, l, row, col)
@@ -45,7 +45,7 @@ def quadrant(p, q, l, i, j):
 
 
 def poseTuile(i, j, dir):
-    color = randomColor()
+    # color = randomColor()
     tab = [[0 for _ in range(2)] for _ in range(3)]
     if dir == Direction.NO:
         tab[0] = [i+1, j]
@@ -61,21 +61,22 @@ def poseTuile(i, j, dir):
         tab[0] = [i, j+1]
         tab[1] = [i-1, j+1]
         tab[2] = [i-1, j]
-    else :
+    else : # dir == Direction.SE
         tab[0] = [i, j-1]
         tab[1] = [i-1, j-1]
         tab[2] = [i-1, j]
 
     global count
-    root.after(speed*count, lambda: poseTuileAux(tab, color))
+    root.after(speed*count, lambda: poseTuileAux(tab))
     count += 1
 
-def poseTuileAux(tab, color):
+def poseTuileAux(tab):
+    color = randomColor()
     for k in range(3):
         r, c = tab[k][0], tab[k][1]
-        x0 = r*(512//size)
-        y0 = c*(512//size)
-        canva.create_rectangle(x0, y0, x0 + 512//size, y0 + 512//size, fill=color)
+        x0 = r*(length)
+        y0 = c*(length)
+        canva.create_rectangle(x0, y0, x0 + length, y0 + length, fill=color)
 
 
 def pavage(p, q, l, i, j):
@@ -86,26 +87,26 @@ def pavage(p, q, l, i, j):
         m = 2**(l-1)
         if (dir == Direction.NE) :
             pavage(p, q, l-1, p+m-1, q+m-1) # NO
-            pavage(p, q+m, l-1, i, j)       # NE
-            pavage(p+m, q, l-1, p+m, q+m-1) # SO
+            pavage(p+m, q, l-1, p+m, q+m-1) # NE
+            pavage(p, q+m, l-1, i, j)       # SO
             pavage(p+m, q+m, l-1, p+m, q+m) # SE
             poseTuile(p+m-1, q+m, dir)
         elif dir == Direction.NO :
             pavage(p, q, l-1, i, j)         # NO
-            pavage(p, q+m, l-1, p+m-1, q+m) # NE
-            pavage(p+m, q, l-1, p+m, q+m-1) # SO
+            pavage(p+m, q, l-1, p+m, q+m-1) # NE
+            pavage(p, q+m, l-1, p+m-1, q+m) # SO
             pavage(p+m, q+m, l-1, p+m, q+m) # SE
             poseTuile(p+m-1, q+m-1, dir)
         elif dir == Direction.SE :
             pavage(p, q, l-1, p+m-1, q+m-1) # NO
-            pavage(p, q+m, l-1, p+m-1, q+m) # NE
-            pavage(p+m, q, l-1, p+m, q+m-1) # SO
+            pavage(p+m, q, l-1, p+m, q+m-1) # NE
+            pavage(p, q+m, l-1, p+m-1, q+m) # SO
             pavage(p+m, q+m, l-1, i, j)     # SE
             poseTuile(p+m, q+m, dir)
         else : # dir == Direction.SO
             pavage(p, q, l-1, p+m-1, q+m-1) # NO
-            pavage(p, q+m, l-1, p+m-1, q+m) # NE
-            pavage(p+m, q, l-1, i, j)       # SO
+            pavage(p+m, q, l-1, i, j)       # NE
+            pavage(p, q+m, l-1, p+m-1, q+m) # SO
             pavage(p+m, q+m, l-1, p+m, q+m) # SE
             poseTuile(p+m, q+m-1, dir)
 if len(sys.argv) > 1:
@@ -117,7 +118,7 @@ if len(sys.argv) > 2:
 else :
     speed = int(input("Enter the speed of each step (in ms)"))
 size = 2**l
-
+length = 512//size
 root = Tk()
 root.title("LPavage")
 root.geometry("512x512")
@@ -125,7 +126,7 @@ canva = Canvas(root, width=512, height=512, bg='white')
 canva.pack(fill=BOTH, expand=True)
 
 count = 0
-for line in range(0, 513, 512//size):
+for line in range(0, 513, length):
     canva.create_line([(0, line), (512, line)])
     canva.create_line([(line, 0), (line, 512)])
 
