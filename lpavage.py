@@ -21,12 +21,14 @@ def randomColor():
 
 def launch(event):
     widget = event.widget
-    widget.config(bg='black')
-    row = widget.grid_info()['row']
-    col = widget.grid_info()['column']
-    grid[row][col] = -1
-    root.unbind("<Button-1>")
-    root.after_cancel(id)
+    row = event.x // (512//size)
+    x0  = row * (512//size)
+    col = event.y // (512//size)
+    y0 = col * (512//size)
+    x1 = x0 + 512//size
+    y1 = y0 + 512//size
+    widget.create_rectangle(x0, y0, x1, y1, fill='black')
+    widget.unbind("<Button-1>")
     pavage(0, 0, l, row, col)
 
 def quadrant(p, q, l, i, j):
@@ -66,12 +68,16 @@ def poseTuile(i, j, dir):
 
     global count
     root.after(speed*count, lambda: poseTuileAux(tab, color))
-    count+=1
+    count += 1
 
 def poseTuileAux(tab, color):
     for k in range(3):
         r, c = tab[k][0], tab[k][1]
-        canvas[r][c].config(bg=color)
+        x0 = r*(512//size)
+        y0 = c*(512//size)
+        canva.create_rectangle(x0, y0, x0 + 512//size, y0 + 512//size, fill=color)
+
+
 def pavage(p, q, l, i, j):
     dir = quadrant(p, q, l, i, j)
     if l == 1:
@@ -111,17 +117,17 @@ if len(sys.argv) > 2:
 else :
     speed = int(input("Enter the speed of each step (in ms)"))
 size = 2**l
-grid = [[0 for _ in range(size)] for _ in range(size)]
 
 root = Tk()
 root.title("LPavage")
-f = Frame(root)
-f.pack()
+root.geometry("512x512")
+canva = Canvas(root, width=512, height=512, bg='white')
+canva.pack(fill=BOTH, expand=True)
+
 count = 0
-canvas = [[None for i in range(size)] for j in range(size)]
-for line in range(size):
-    for column in range(size):
-        canvas[line][column] = Canvas(f, width=512//size, height=512//size, background='white')
-        canvas[line][column].grid(row=line, column=column)
-root.bind("<Button-1>", launch)
+for line in range(0, 513, 512//size):
+    canva.create_line([(0, line), (512, line)])
+    canva.create_line([(line, 0), (line, 512)])
+
+canva.bind("<Button-1>", launch)
 root.mainloop()
