@@ -117,10 +117,14 @@ while running:
         elif running == 1 and event.type == KEYDOWN and event.key == K_SPACE :
             running = 2
         elif running == 2 and event.type == MOUSEBUTTONDOWN:
+            if grid[event.pos[1]//10 + 1][event.pos[0]//10 + 1] == None:
+                continue
             start = (event.pos[1]//10, event.pos[0]//10)
             pygame.draw.rect(window, blue, ((event.pos[0]//10)*10, (event.pos[1]//10)*10, 10, 10))
             running = 3
         elif running == 3 and event.type == MOUSEBUTTONDOWN:
+            if grid[event.pos[1]//10 + 1][event.pos[0]//10 + 1] == None:
+                continue
             goal = (event.pos[1]//10, event.pos[0]//10)
             pygame.draw.rect(window, red, ((event.pos[0]//10)*10, (event.pos[1]//10)*10, 10, 10))
             running = 4
@@ -128,7 +132,6 @@ while running:
             astar(start, goal)
             running = 5
         elif running == 5 and event.type == KEYDOWN and event.key == K_SPACE:
-            print("5")
             clear()
             grid = initGrid()
             running = 1
