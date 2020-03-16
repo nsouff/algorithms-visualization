@@ -1,7 +1,5 @@
 import pygame
 from pygame.locals import *
-import math
-from queue import PriorityQueue
 class Node:
     def __init__(self, x=None, y=None, parent=None):
         self.parent = parent
@@ -70,7 +68,7 @@ def draw_path(end):
 def astar(start, goal):
     first = grid[start[0] + 1][start[1] + 1]
     end = grid[goal[0] + 1][goal[1] + 1]
-    first.f = math.sqrt((first.x-end.x)**2 + (first.y - end.y)**2)
+    first.f = heuristic(first, end)
     closedList = []
     openList = []
     openList.append(first)
