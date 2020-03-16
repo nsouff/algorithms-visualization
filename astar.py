@@ -18,6 +18,17 @@ def drawGrid():
         pygame.draw.line(window, (0,0,0), (0, i), (width, i), 1)
     for i in range(0, width, 10):
         pygame.draw.line(window, (0,0,0), (i, 0), (i, height), 1)
+
+def initGrid():
+    grid = [[Node(i, j) for i in range(w + 2)] for j in range(h + 2)]
+    for i in range(w+2):
+        grid[0][i] = None
+        grid[h+1][i] = None
+    for j in range(h+2):
+        grid[j][0] = None
+        grid[j][w+1] = None
+    return grid
+
 def wall():
     cur = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
@@ -25,14 +36,17 @@ def wall():
         pygame.draw.rect(window, black, ((cur[0]//10)*10, (cur[1]//10)*10, 10, 10))
         grid[cur[1]//10 + 1 ][cur[0]//10 + 1] = None
 
+def clear():
+    window.fill(white)
+    drawGrid()
+
 black = (0,0,0)
 white = (255,255,255)
 blue = (0, 0, 255)
 red = (255, 0, 0)
 green = (0,255,0)
-other = (255, 255, 0)
-other2 = (255, 0, 255)
-other3 = (0, 255, 255)
+yellow = (255, 255, 0)
+purple = (255, 0, 255)
 width = 1500
 w = 150
 height = 800
@@ -43,14 +57,7 @@ window = pygame.display.set_mode((width, height))
 window.fill(white)
 pygame.display.update()
 drawGrid()
-grid = [[Node(i, j) for i in range(w + 2)] for j in range(h + 2)]
-for i in range(w+2):
-    grid[0][i] = None
-    grid[h+1][i] = None
-for j in range(h+2):
-    grid[j][0] = None
-    grid[j][w+1] = None
-pygame.display.flip()
+grid = initGrid()
 start = (0, 0)
 goal = (0, 0)
 
@@ -91,12 +98,12 @@ def astar(start, goal):
             else:
                 child.g = g
                 openList.append(child)
-                pygame.draw.rect(window, other2, (10*(child.x-1), 10*(child.y -1), 10, 10))
+                pygame.draw.rect(window, purple, (10*(child.x-1), 10*(child.y -1), 10, 10))
                 child.f = heuristic(child, end) + g
                 child.parent = u
         openList.remove(u)
         closedList.append(u)
-        pygame.draw.rect(window, other, ((u.x-1) * 10, (u.y-1) * 10 , 10, 10))
+        pygame.draw.rect(window, yellow, ((u.x-1) * 10, (u.y-1) * 10 , 10, 10))
         pygame.display.flip()
 
 
@@ -107,7 +114,7 @@ while running:
     for event in pygame.event.get():
         if event.type == QUIT:
             running = 0
-        elif event.type == KEYDOWN and event.key == K_SPACE and running == 1:
+        elif running == 1 and event.type == KEYDOWN and event.key == K_SPACE :
             running = 2
         elif running == 2 and event.type == MOUSEBUTTONDOWN:
             start = (event.pos[1]//10, event.pos[0]//10)
@@ -119,6 +126,12 @@ while running:
             running = 4
             pygame.display.flip()
             astar(start, goal)
+            running = 5
+        elif running == 5 and event.type == KEYDOWN and event.key == K_SPACE:
+            print("5")
+            clear()
+            grid = initGrid()
+            running = 1
 
         if running == 1: wall()
         pygame.display.flip()
