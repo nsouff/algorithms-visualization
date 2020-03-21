@@ -1,4 +1,5 @@
 import pygame
+import sys
 from pygame.locals import *
 class Node:
     def __init__(self, x=None, y=None, parent=None):
@@ -9,7 +10,7 @@ class Node:
 
 
 def heuristic(n1, end):
-    return abs(n1.x - end.x) + abs(n1.y - end.y)
+    return weight*(abs(n1.x - end.x) + abs(n1.y - end.y))
 
 def drawGrid():
     for i in range(0, height, 10):
@@ -38,13 +39,18 @@ def clear():
     window.fill(white)
     drawGrid()
 
+if (len(sys.argv) > 1):
+    weight = int(sys.argv[1])
+else :
+    weight = 1
+
 black = (0,0,0)
 white = (255,255,255)
 blue = (0, 0, 255)
 red = (255, 0, 0)
 green = (0,255,0)
 yellow = (255, 255, 0)
-purple = (255, 0, 255)
+magenta = (255, 0, 255)
 width = 1500
 w = 150
 height = 800
@@ -73,7 +79,8 @@ def astar(start, goal):
     openList = []
     openList.append(first)
     while len(openList) > 0:
-        u = min(openList, key=lambda x:x.f)
+        if weight != 0: u = min(openList, key=lambda x:x.f)
+        else: u = openList[0]
         if u.x == end.x and u.y == end.y:
             draw_path(u)
             return
@@ -96,7 +103,7 @@ def astar(start, goal):
             else:
                 child.g = g
                 openList.append(child)
-                pygame.draw.rect(window, purple, (10*(child.x-1), 10*(child.y -1), 10, 10))
+                pygame.draw.rect(window, magenta, (10*(child.x-1), 10*(child.y -1), 10, 10))
                 child.f = heuristic(child, end) + g
                 child.parent = u
         openList.remove(u)
