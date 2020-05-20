@@ -14,9 +14,9 @@ def heuristic(n1, end):
 
 def drawGrid():
     for i in range(0, height, 10):
-        pygame.draw.line(window, (0,0,0), (0, i), (width, i), 1)
+        pygame.draw.line(window, black, (0, i), (width, i), 1)
     for i in range(0, width, 10):
-        pygame.draw.line(window, (0,0,0), (i, 0), (i, height), 1)
+        pygame.draw.line(window, black, (i, 0), (i, height), 1)
 
 def initGrid():
     grid = [[Node(i, j) for i in range(w + 2)] for j in range(h + 2)]
@@ -38,32 +38,6 @@ def wall():
 def clear():
     window.fill(white)
     drawGrid()
-
-if (len(sys.argv) > 1):
-    weight = int(sys.argv[1])
-else :
-    weight = 1
-
-black = (0,0,0)
-white = (255,255,255)
-blue = (0, 0, 255)
-red = (255, 0, 0)
-green = (0,255,0)
-yellow = (255, 255, 0)
-magenta = (255, 0, 255)
-width = 1500
-w = 150
-height = 800
-h = 80
-pygame.init()
-pygame.display.set_caption("A*")
-window = pygame.display.set_mode((width, height))
-window.fill(white)
-pygame.display.update()
-drawGrid()
-grid = initGrid()
-start = (0, 0)
-goal = (0, 0)
 
 def draw_path(end):
     pygame.draw.rect(window, green, ((end.x-1)*10, 10*(end.y-1), 10, 10))
@@ -112,11 +86,41 @@ def astar(start, goal):
         pygame.display.flip()
 
 
+if (len(sys.argv) > 1):
+    weight = int(sys.argv[1])
+else :
+    weight = 1
+
+black = (0,0,0)
+white = (255,255,255)
+blue = (0, 0, 255)
+red = (255, 0, 0)
+green = (0,255,0)
+yellow = (255, 255, 0)
+magenta = (255, 0, 255)
+width = 1500
+w = 150
+height = 800
+h = 80
+pygame.init()
+pygame.display.set_caption("A*")
+window = pygame.display.set_mode((width, height))
+window.fill(white)
+pygame.display.update()
+drawGrid()
+grid = initGrid()
+start = (0, 0)
+goal = (0, 0)
+
+
+
 
 
 running = 1
 while running:
     for event in pygame.event.get():
+        if running == 1:
+            wall()
         if event.type == QUIT:
             running = 0
         elif running == 1 and event.type == KEYDOWN and event.key == K_SPACE :
@@ -141,5 +145,4 @@ while running:
             grid = initGrid()
             running = 1
 
-        if running == 1: wall()
         pygame.display.flip()
