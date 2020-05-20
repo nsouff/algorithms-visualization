@@ -14,6 +14,9 @@ With
 - 2<sup>*l*</sup> the length of the square  
 - *speed* the time in *ms* between each step of the algorithm
 
+### Requirement
+* `tkinter`
+
 ## Graph exploration
 3 graph exploration algorithm are implemented in `astar.py`
 - [A*](https://en.wikipedia.org/wiki/A*_search_algorithm)
@@ -44,3 +47,17 @@ In green you will have the shortest path\
 In yellow, all the explored node\
 In magenta, all the discovered, but not explored node
 In white all the non discovered node
+
+### Requirement
+* `pygame`
+
+## Conway's Game of life
+A simple visualisation of Conway's famous [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+### Example
+![Conway's game of life gif](game_of_life.gif)
+### Launch
+```
+python3 game_of_life.py
+```
+### Requirement
+* `pygame`
