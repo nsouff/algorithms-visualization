@@ -1,5 +1,5 @@
 # python-algorithms
-Algorithms and their visualisation implemented in Python
+Algorithms and their visualization implemented in Python
 ## LPavage
 ### Problem
 We consider a square grid of length *n* = 2<sup>*l*</sup> with a forbiden square of coordinate *i, j*.
@@ -52,7 +52,7 @@ In white all the non discovered node
 * `pygame`
 
 ## Conway's Game of life
-A simple visualisation of Conway's famous [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+A simple visualization of Conway's famous [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 ### Example
 ![Conway's game of life gif](game_of_life.gif)
 ### Launch
