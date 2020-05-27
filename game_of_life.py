@@ -65,13 +65,14 @@ window.fill(white)
 drawGrid(black)
 pygame.display.update()
 running = 1
+clock = pygame.time.Clock()
 update_it = 0
 while running:
-    if running == 2 and pygame.time.get_ticks() >= update_it:
+    if running == 2:
         update_grid()
         pygame.display.flip()
         update_it = pygame.time.get_ticks() + 100
-
+        clock.tick(10)
     for event in pygame.event.get():
         if running == 1:
             draw_life()
@@ -82,4 +83,4 @@ while running:
         elif running == 1 and event.type == KEYDOWN and event.key == K_SPACE :
             remove_grid()
             running = 2
-            update_it = pygame.time.get_ticks() + 100
+    # clock.tick(20)
