@@ -26,6 +26,10 @@ def init_grid(filename):
             assert(file.read(1) == '\n')
     return grid
 def draw(grid, window):
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            exit()
     window.fill(white)
     for i in range(9):
         width = 1
