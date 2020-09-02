@@ -1,5 +1,7 @@
 import pygame
 import sys
+from pygame.locals import *
+
 
 black = (0, 0, 0)
 white = (255,255,255)
@@ -76,6 +78,13 @@ def init_digits():
         digits[i] = font.render(str(i+1), True, black)
 
 
+def freeze(window):
+    loop = True
+    while loop:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                loop = False
+
 def main():
     pygame.init()
     window = pygame.display.set_mode((900, 900))
@@ -86,5 +95,6 @@ def main():
     init_digits()
     draw(grid, window)
     solve(grid, window)
+    freeze(window)
 if __name__ == '__main__':
     main()
