@@ -4,7 +4,7 @@ Algorithms and their visualization implemented in Python
 ## Table of contents
 * [L pavage](#l-pavage)
 * [Graph exploration](#graph-exploration)
-* [Conway's Game of Life](#conway-s-game-of-life)
+* [Conway's Game of Life](#conways-game-of-life)
 * [Backtracking](#sudoku-solver-with-backtracking)
 
 ## L Pavage
