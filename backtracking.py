@@ -1,12 +1,15 @@
 import pygame
 import sys
 from pygame.locals import *
+import tkinter
+from tkinter import simpledialog
 
 
 black = (0, 0, 0)
 white = (255,255,255)
 clock = None
 digits = [None for _ in range(9)]
+FPS = None
 
 if len(sys.argv) > 1:
     filename = sys.argv[1]
@@ -36,7 +39,7 @@ def draw(grid, window):
                     if grid[i][j] == n:
                         window.blit(digits[n-1], (j*100 + 30, i*100 + 30))
                         pass
-    clock.tick(10)
+    clock.tick(FPS)
     pygame.display.update()
 def valid_number(grid, n, x, y):
     for i in range(9):
@@ -85,14 +88,21 @@ def freeze(window):
             if event.type == QUIT:
                 loop = False
 
+def init_fps():
+    global FPS
+    pop = tkinter.Tk()
+    pop.withdraw()
+    FPS = simpledialog.askinteger("Steps per second", "How many steps per second ?", initialvalue=10)
+    pop.destroy()
 def main():
+    global clock
     pygame.init()
     window = pygame.display.set_mode((900, 900))
     pygame.display.set_caption("Sudoku Solver")
-    global clock
     clock = pygame.time.Clock()
     grid = init_grid(filename)
     init_digits()
+    init_fps()
     draw(grid, window)
     solve(grid, window)
     freeze(window)
